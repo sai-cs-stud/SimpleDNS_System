@@ -27,7 +27,7 @@ def client():
     with open("PROJI-HNS.txt") as txtdata:
         for line in txtdata:
             hostreqs.append(line)
-
+    
     # Define port for rs socket
     port1 = rsListenPort
     #localhost_addr1 = socket.gethostbyname(socket.gethostname())
@@ -35,6 +35,10 @@ def client():
     # connect to servers on local(for now)
     server_binding1 = (rsHostname,port1)
     cli_rss.connect(server_binding1)
+    # Open resolved and clear
+    f = open("RESOLVED.txt", "r+")
+    f.seek(0)
+    f.truncate()
 
     while True:
         # Send and recieve here
@@ -63,7 +67,12 @@ def client():
                 #print("[C]: Requesting " + req)
                 data_from_ts = "{}".format(cli_tss.recv(200).decode('UTF-8'))
                 print("[C]: Recieved\n" + data_from_ts)
+                f.write(data_from_ts+"\n")
+            else:
+                f.write(data_from_rs+"\n")
         break
+
+    f.close()
     # Close client sockets
     cli_tss.send('disconnect'.encode('UTF-8'))
     cli_tss.close()
