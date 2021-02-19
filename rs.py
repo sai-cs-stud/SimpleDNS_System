@@ -1,6 +1,6 @@
 import socket
-def convertTuple(tup):
-    str = ' '.join(tup)
+def convertList(lis):
+    str = ' '.join(lis)
     return str
 def root_server():
     try:
@@ -20,31 +20,35 @@ def root_server():
     csockid, addr = ss.accept()
     print ("[RS]: Got a connection request from a client at {}".format(addr))
 
-    # List for dns data(in tuple format)
+    # List for dns data(in list format)
     dnsrs = []
     # Read in data from txt file
     with open("PROJI-DNSRS.txt") as txtdata:
         for line in txtdata:
-            linetup = tuple(map(str, line.split(' ')))
-            dnsrs.append(linetup)
+            lineList = line.split()
+            dnsrs.append(lineList)
     
     # recieve client msg
     data_from_client=csockid.recv(200)
     hnsreq = "{}".format(data_from_client.decode('UTF-8'))
-    print("[RS]: Data received from client: " + hnsreq)
+    print("[RS]: Processing request from client " + hnsreq)
     
     # Check if in dns (caps insensitive search)
     boolean = 0
-    ns_tup = {}
-    for linetup in dnsrs:
-        if linetup[2] == 'NS':
-            ns_tup = linetup
-        if linetup[0].lower() == hnsreq.lower():
-            csockid.send(convertTuple(linetup).encode('UTF-8'))
+    ns_str = ''
+    for lineList in dnsrs:
+        if lineList[2] == 'NS':
+            print("success1")
+            ns_str = convertList(lineList)
+        if lineList[0].lower() == str.strip(hnsreq.lower()):
+            #print("success")
+            csockid.send(convertList(lineList).encode('UTF-8'))
+            #print("[RS]: Data sent to client")
             boolean = 1
+            break
     if boolean == 0:
-        csockid.send(convertTuple(ns_tup).encode('UTF-8'))
-    
+        csockid.send(ns_str.encode('UTF-8'))
+        #print("[RS]: Data sent to client")
     # Close the server socket
     ss.close()
     exit()

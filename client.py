@@ -38,11 +38,10 @@ def client():
 
     # Send and recieve here
     for req in hostreqs:
-
         cli_rss.send(req.encode('UTF-8'))
-        print("[C]: Requesting " + req + "from [RS]")
+        print("[C]: Requesting " + req)
         data_from_rs = cli_rss.recv(200)
-        print("[RS]: {}".format(data_from_rs.decode('UTF-8')))
+        print("[C]: Recieved\n{}".format(data_from_rs.decode('utf-8')))
 
 
     # Close client sockets
