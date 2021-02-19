@@ -9,7 +9,7 @@ def root_server():
     except socket.error as err:
         print('socket open error: {}\n'.format(err))
         exit()
-    server_binding = ('', 50007)
+    server_binding = ('', 65000)
     ss.bind(server_binding)
     ss.listen(1)
     host = socket.gethostname()
