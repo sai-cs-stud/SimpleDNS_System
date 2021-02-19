@@ -23,7 +23,7 @@ def root_server():
     with open("/PROJI-DNSRS.txt") as txtdata:
         for line in txtdata:
             linetup = tuple(map(str, line.split(' ')))
-            dnsrs.append()
+            dnsrs.append(linetup)
     
     # recieve client msg
     data_from_client=csockid.recv(100)
