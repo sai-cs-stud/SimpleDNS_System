@@ -2,14 +2,14 @@ import threading
 import time
 import random
 import socket
-import rs
-from rs import root_server
-from ts import top_server
+#import rs
+#from rs import root_server
+#from ts import top_server
 import sys
 
 rsHostname = sys.argv[1]
-rsListenPort = sys.argv[2]
-tsListenPort = sys.argv[3]
+rsListenPort = int(sys.argv[2])
+tsListenPort = int(sys.argv[3])
 
 
 def client():
@@ -29,11 +29,11 @@ def client():
             hostreqs.append(line)
 
     # Define port for rs socket
-    port1 = 65000
-    localhost_addr1 = socket.gethostbyname(socket.gethostname())
+    port1 = rsListenPort
+    #localhost_addr1 = socket.gethostbyname(socket.gethostname())
 
     # connect to servers on local(for now)
-    server_binding1 = (localhost_addr1,port1)
+    server_binding1 = (rsHostname,port1)
     cli_rss.connect(server_binding1)
 
     while True:
@@ -50,11 +50,11 @@ def client():
                         cli_tss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         print("[C]: Client TS socket created")
                          # Define port for ts socket
-                        port2 = 12345
+                        port2 = tsListenPort
                         localhost_addr2 = socket.gethostbyname(socket.gethostname())
 
                         # connect to ts on local(for now)
-                        server_binding2 = (localhost_addr2, port2)
+                        server_binding2 = (rsHostname, port2)
                         cli_tss.connect(server_binding2)
                 except socket.error as err:
                     print('socket open error: {} \n'.format(err))
@@ -73,18 +73,19 @@ def client():
     exit()
 
 if __name__ == "__main__":
-    t1 = threading.Thread(name='rs', target=root_server)
-    t1.start()
+    client()
+#    t1 = threading.Thread(name='rs', target=root_server)
+#    t1.start()
 
-    time.sleep(random.random() * 5)
-    t3 = threading.Thread(name='ts', target=top_server)
-    t3.start()
+#    time.sleep(random.random() * 5)
+#    t3 = threading.Thread(name='ts', target=top_server)
+#    t3.start()
 
-    time.sleep(random.random() * 5)
-    t2 = threading.Thread(name='client', target=client)
-    t2.start()
+#    time.sleep(random.random() * 5)
+#    t2 = threading.Thread(name='client', target=client)
+#    t2.start()
 
     
 
-    time.sleep(30)
+#    time.sleep(30)
     print("Done.")

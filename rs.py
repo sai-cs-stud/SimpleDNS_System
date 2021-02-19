@@ -13,7 +13,7 @@ def root_server():
     except socket.error as err:
         print('socket open error: {}\n'.format(err))
         exit()
-    server_binding = ('', 65000)
+    server_binding = ('', rsListenPort)
     ss.bind(server_binding)
     ss.listen(1)
     host = socket.gethostname()
@@ -55,4 +55,5 @@ def root_server():
     # Close the server socket
     ss.close()
     exit()
-    
+if __name__ == "__main__":
+    root_server()

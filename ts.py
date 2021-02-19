@@ -1,7 +1,7 @@
 import socket
 import sys
 
-tsListenPort = sys.argv[1]
+tsListenPort = int(sys.argv[1])
 def convertList(lis):
     str = ' '.join(lis)
     return str
@@ -50,4 +50,5 @@ def top_server():
     # Close the server socket
     ss.close()
     exit()
-    
+if __name__ == "__main__":
+    top_server()
