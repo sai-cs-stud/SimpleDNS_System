@@ -35,14 +35,15 @@ def client():
 
     server_binding2 = (localhost_addr2, port2)
     #cli_tss.connect(server_binding2)
-
-    # Send and recieve here
-    for req in hostreqs:
-        cli_rss.send(req.encode('UTF-8'))
-        print("[C]: Requesting " + req)
-        data_from_rs = cli_rss.recv(200)
-        print("[C]: Recieved\n{}".format(data_from_rs.decode('utf-8')))
-
+    while True:
+        # Send and recieve here
+        for req in hostreqs:
+            cli_rss.send(req.encode('UTF-8'))
+            print("[C]: Requesting " + req)
+            data_from_rs = cli_rss.recv(200)
+            print("[C]: Recieved\n{}".format(data_from_rs.decode('utf-8')))
+        break
+    cli_rss.send('disconnect'.encode('UTF-8'))
 
     # Close client sockets
     cli_rss.close()
@@ -57,5 +58,5 @@ if __name__ == "__main__":
     t2 = threading.Thread(name='client', target=client)
     t2.start()
 
-    time.sleep(5)
+    time.sleep(30)
     print("Done.")
