@@ -42,8 +42,8 @@ def top_server():
                 csockid.send(convertList(lineList).encode('UTF-8'))
                 boolean = 1
         if boolean == 0:
-            csockid.send(hnsreq + "- ERROR: HOST NOT FOUND".encode('UTF-8'))
-        break
+            csockid.send((hnsreq + "- ERROR: HOST NOT FOUND").encode('UTF-8'))
+        #break
     # Close the server socket
     ss.close()
     exit()
