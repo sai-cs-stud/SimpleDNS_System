@@ -2,7 +2,6 @@ import threading
 import time
 import random
 import socket
-import sys
 import rs
 from rs import root_server
 def client():
@@ -35,18 +34,20 @@ def client():
     cli_rss.connect(server_binding1)
 
     server_binding2 = (localhost_addr2, port2)
-    cli_tss.connect(server_binding2)
+    #cli_tss.connect(server_binding2)
 
     # Send and recieve here
     for req in hostreqs:
-        cli_rss.send(req.lower())
+
+        cli_rss.send(req.encode('UTF-8'))
         print("[C]: Requesting " + req + "from [RS]")
         data_from_rs = cli_rss.recv(200)
-        print("[RS]: "+ data_from_rs)
+        print("[RS]: {}".format(data_from_rs.decode('UTF-8')))
+
 
     # Close client sockets
     cli_rss.close()
-    cli_tss.close()
+    #cli_tss.close()
     exit()
 
 if __name__ == "__main__":
