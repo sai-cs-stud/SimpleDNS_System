@@ -5,6 +5,12 @@ import socket
 import rs
 from rs import root_server
 from ts import top_server
+import sys
+
+rsHostname = sys.argv[1]
+rsListenPort = sys.argv[2]
+tsListenPort = sys.argv[3]
+
 
 def client():
     try:

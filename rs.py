@@ -1,4 +1,8 @@
 import socket
+import sys
+
+rsListenPort = int(sys.argv[1])
+
 def convertList(lis):
     str = ' '.join(lis)
     return str
