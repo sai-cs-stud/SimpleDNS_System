@@ -33,7 +33,7 @@ def top_server():
         hnsreq = "{}".format(data_from_client.decode('UTF-8'))
         if str.strip(hnsreq) == 'disconnect':
             break
-        print("[TS]: Processing request from client " + hnsreq)
+        print("[TS]: Processing request from client-" + str.strip(hnsreq))
     
         # Check if in dns (caps insensitive search)
         boolean = 0
@@ -42,7 +42,7 @@ def top_server():
                 csockid.send(convertList(lineList).encode('UTF-8'))
                 boolean = 1
         if boolean == 0:
-            csockid.send((hnsreq + "- ERROR: HOST NOT FOUND").encode('UTF-8'))
+            csockid.send((str.strip(hnsreq) + " - ERROR: HOST NOT FOUND").encode('UTF-8'))
         #break
     # Close the server socket
     ss.close()

@@ -30,9 +30,9 @@ def root_server():
         # recieve client msg
         data_from_client=csockid.recv(200)
         hnsreq = "{}".format(data_from_client.decode('UTF-8'))
+        print("\n[RS]: Processing request from client-" + str.strip(hnsreq))
         if str.strip(hnsreq) == 'disconnect':
             break
-        print("[RS]: Processing request from client " + hnsreq)
     
         # Check if in dns (caps insensitive search)
         boolean = 0

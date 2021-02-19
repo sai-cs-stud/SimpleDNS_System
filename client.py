@@ -34,7 +34,7 @@ def client():
         # Send and recieve here
         for req in hostreqs:
             cli_rss.send(req.encode('UTF-8'))
-            print("[C]: Requesting " + req)
+            #print("[C]: Requesting " + req)
             data_from_rs = "{}".format(cli_rss.recv(200).decode('UTF-8'))
             print("[C]: Recieved\n" + data_from_rs)
             dataline = data_from_rs.split()
@@ -54,7 +54,7 @@ def client():
                     print('socket open error: {} \n'.format(err))
                     exit()
                 cli_tss.send(req.encode('UTF-8'))
-                print("[C]: Requesting " + req)
+                #print("[C]: Requesting " + req)
                 data_from_ts = "{}".format(cli_tss.recv(200).decode('UTF-8'))
                 print("[C]: Recieved\n" + data_from_ts)
         break
