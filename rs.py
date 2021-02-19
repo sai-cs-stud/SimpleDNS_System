@@ -35,7 +35,7 @@ def root_server():
     
     # Check if in dns (caps insensitive search)
     boolean = 0
-    nstup = {}
+    ns_tup = {}
     for linetup in dnsrs:
         if linetup[2] == 'NS':
             ns_tup = linetup
