@@ -2,7 +2,7 @@ import threading
 import time
 import random
 import socket
-from rs import root_server
+from .rs import root_server
 
 def client():
     try:
