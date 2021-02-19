@@ -16,6 +16,15 @@ def root_server():
     print("[S]: Server IP address is {}".format(localhost_ip))
     csockid, addr = ss.accept()
     print ("[S]: Got a connection request from a client at {}".format(addr))
+
+    # List for dns data(in tuple format)
+    dnsrs = []
+    # Read in data from txt file
+    with open("/PROJI-DNSRS.txt") as txtdata:
+        for line in txtdata:
+            linetup = tuple(map(str, line.split(' ')))
+            dnsrs.append()
+    
     # recieve client msg
     data_from_client=csockid.recv(100)
     msg2 = "{}".format(data_from_client.decode('utf-8'))
