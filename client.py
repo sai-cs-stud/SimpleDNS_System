@@ -3,9 +3,8 @@ import time
 import random
 import socket
 import sys
-from sys import root_server
-sys.path.append("project1\project1\rs.py")
-#from project1.project1.rs import root_server
+import rs
+from rs import root_server
 def client():
     try:
         cli_rss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
