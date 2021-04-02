@@ -5,7 +5,7 @@ tsListenPort = int(sys.argv[1])
 def convertList(lis):
     str = ' '.join(lis)
     return str
-def top_server():
+def top_server2():
     try:
         ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print("[TS2]: Server socket created")
@@ -14,7 +14,7 @@ def top_server():
         exit()
     server_binding = ('', tsListenPort)
     ss.bind(server_binding)
-    ss.listen(1)
+    ss.listen(10)
     host = socket.gethostname()
     print("[TS2]: Server host name is {}".format(host))
     localhost_ip = (socket.gethostbyname(host))
@@ -33,6 +33,7 @@ def top_server():
     
         # recieve LS msg
         data_from_LS=csockid.recv(200)
+        print("recieved")
         while data_from_LS:
             hnsreq = "{}".format(data_from_LS.decode('UTF-8'))
             if str.strip(hnsreq) == 'disconnect':
@@ -50,4 +51,4 @@ def top_server():
     ss.close()
     exit()
 if __name__ == "__main__":
-    top_server()
+    top_server2()

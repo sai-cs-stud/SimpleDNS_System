@@ -20,7 +20,7 @@ def root_server():
         exit()
     server_binding = ('', lsListenPort)
     ss.bind(server_binding)
-    ss.listen(1)
+    ss.listen(10)
     host = socket.gethostname()
     print("[LS]: Server host name is {}".format(host))
     localhost_ip = (socket.gethostbyname(host))
@@ -44,7 +44,7 @@ def root_server():
             # Define port for ts sockets
             port1 = ts1ListenPort
             localhost_addr1 = socket.gethostbyname(socket.gethostname())
-            port2 = ts1ListenPort
+            port2 = ts2ListenPort
             localhost_addr2 = socket.gethostbyname(socket.gethostname())
             # connect to ts on local
             server_binding_ts1 = (ts1HostName, port1)
@@ -55,28 +55,35 @@ def root_server():
         except socket.error as err:
             print('socket open error: {} \n'.format(err))
             exit()
+        while data_from_client:
+            hnsreq = "{}".format(data_from_client.decode('UTF-8'))
+            print("\n[LS]: Processing request from client-" + str.strip(hnsreq))
+            if str.strip(hnsreq) == 'disconnect':
+                #do more stuff then break!!!
+                break
 
-        # forward message to TS1 and TS2
-        ls_ts1.send(data_from_client)
-        ls_ts2.send(data_from_client)
-        print("[LS]: Data forwarded to TS1 and TS2")
-        #setting blocking to 0
-        ls_ts1.setblocking(0)
-        ls_ts2.setblocking(0)
-        # Check if in dns (caps insensitive search)
-        data_from_ts = None
-        ready1 = select.select([ls_ts1],[],[], 5.0)
-        if ready1[0]:
-            data_from_ts = ls_ts1.recv(200)
-        ready2 = select.select([ls_ts2],[],[], 5.0)
-        if ready2[0]:
-            data_from_ts = ls_ts2.recv(200)
+            # forward message to TS1 and TS2
+            ls_ts1.send(data_from_client)
+            ls_ts2.send(data_from_client)
+            print("[LS]: Data forwarded to TS1 and TS2")
+            #setting blocking to 0
+            ls_ts1.setblocking(0)
+            ls_ts2.setblocking(0)
+            # Check if in dns (caps insensitive search)
+            data_from_ts = None
+            ready1 = select.select([ls_ts1],[],[], 5.0)
+            if ready1[0]:
+                data_from_ts = ls_ts1.recv(200)
+            ready2 = select.select([ls_ts2],[],[], 5.0)
+            if ready2[0]:
+                data_from_ts = ls_ts2.recv(200)
 
-        #forward ts data result back to client
-        if data_from_ts == None:
-            csockid.send("Hostname - Error:HOST NOT FOUND".encode('UTF-8'))
-        else:
-            csockid.send(data_from_ts)
+            #forward ts data result back to client
+            if data_from_ts == None:
+                csockid.send("Hostname - Error:HOST NOT FOUND".encode('UTF-8'))
+            else:
+                csockid.send(data_from_ts)
+            data_from_client=csockid.recv(200)
 
     # Close the server socket
     ss.close()
