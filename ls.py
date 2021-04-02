@@ -50,6 +50,7 @@ def root_server():
             ls_ts1.connect(server_binding_ts1)
             server_binding_ts2 = (ts2HostName, port2)
             ls_ts2.connect(server_binding_ts2)
+
         except socket.error as err:
             print('socket open error: {} \n'.format(err))
             exit()
@@ -58,21 +59,19 @@ def root_server():
         ls_ts1.send(data_from_client)
         ls_ts2.send(data_from_client)
         print("[LS]: Data forwarded to TS1 and TS2")
-        
+        #setting timout to prevent a hang
+        ls_ts1.settimeout(5.0)
+        ls_ts2.settimeout(5.0)
         # Check if in dns (caps insensitive search)
-        boolean = 0
-        ns_str = ''
-        for lineList in dnsrs:
-            if lineList[2] == 'NS':
-                ns_str = convertList(lineList)
-            if lineList[0].lower() == str.strip(hnsreq.lower()):
-                csockid.send(convertList(lineList).encode('UTF-8'))
-                #print("[RS]: Data sent to client")
-                boolean = 1
-                break
-        if boolean == 0:
-            csockid.send(ns_str.encode('UTF-8'))
-            #print("[RS]: Data sent to client")
+        data_from_ts = ls_ts1.recv(200)
+        data_from_ts = ls_ts2.recv(200)
+
+        #forward ts data result back to client
+        if data_from_ts == None:
+            csockid.send("Hostname - Error:HOST NOT FOUND".encode('UTF-8'))
+        else:
+            csockid.send(data_from_ts)
+
     # Close the server socket
     ss.close()
     exit()

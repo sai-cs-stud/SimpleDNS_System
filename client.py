@@ -44,7 +44,6 @@ def client():
         # Send and recieve here
         for req in hostreqs:
             cli_lss.send(req.encode('UTF-8'))
-            #print("[C]: Requesting " + req)
             data_from_ls = "{}".format(cli_lss.recv(200).decode('UTF-8'))
             print("[C]: Recieved\n" + data_from_ls)
             dataline = data_from_ls.split()
