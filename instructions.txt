@@ -211,3 +211,8 @@ characters.
 START EARLY to allow plenty of time for questions on Piazza should you
 run into difficulties.
 
+EXAMPLE TERMINAL COMMANDS
+python ts1.py 12345
+python ts2.py 12346
+python ls.py 12347 DESKTOP-IL364JC 12345 DESKTOP-IL364JC 12346
+python client.py DESKTOP-IL364JC 12347

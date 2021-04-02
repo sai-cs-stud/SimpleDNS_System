@@ -9,7 +9,6 @@ import sys
 
 lsHostname = sys.argv[1]
 lsListenPort = int(sys.argv[2])
-#tsListenPort = int(sys.argv[3])
 
 
 def client():
