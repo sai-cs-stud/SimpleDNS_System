@@ -34,7 +34,6 @@ def root_server():
         hnsreq = "{}".format(data_from_client.decode('UTF-8'))
         print("\n[LS]: Processing request from client-" + str.strip(hnsreq))
         if str.strip(hnsreq) == 'disconnect':
-            #do more stuff then break!!!
             break
 
         # Connect to TS Servers
@@ -59,7 +58,8 @@ def root_server():
             hnsreq = "{}".format(data_from_client.decode('UTF-8'))
             print("\n[LS]: Processing request from client-" + str.strip(hnsreq))
             if str.strip(hnsreq) == 'disconnect':
-                #do more stuff then break!!!
+                ls_ts1.send('disconnect'.encode('UTF-8'))
+                ls_ts2.send('disconnect'.encode('UTF-8'))
                 break
 
             # forward message to TS1 and TS2
@@ -84,7 +84,7 @@ def root_server():
             else:
                 csockid.send(data_from_ts)
             data_from_client=csockid.recv(200)
-
+        break
     # Close the server socket
     ss.close()
     exit()
