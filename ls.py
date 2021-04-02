@@ -1,5 +1,6 @@
 import socket
 import sys
+import select
 
 lsListenPort = int(sys.argv[1])
 ts1HostName = sys.argv[2]
@@ -59,12 +60,16 @@ def root_server():
         ls_ts1.send(data_from_client)
         ls_ts2.send(data_from_client)
         print("[LS]: Data forwarded to TS1 and TS2")
-        #setting timout to prevent a hang
-        ls_ts1.settimeout(5.0)
-        ls_ts2.settimeout(5.0)
+        #setting blocking to 0
+        ls_ts1.setblocking(0)
+        ls_ts2.setblocking(0)
         # Check if in dns (caps insensitive search)
-        data_from_ts = ls_ts1.recv(200)
-        data_from_ts = ls_ts2.recv(200)
+        ready1 = select.select([ls_ts1],[],[], 5.0)
+        if ready1[0]:
+            data_from_ts = ls_ts1.recv(200)
+        ready2 = select.select([ls_ts1],[],[], 5.0)
+        if ready2[0]:
+            data_from_ts = ls_ts2.recv(200)
 
         #forward ts data result back to client
         if data_from_ts == None:
