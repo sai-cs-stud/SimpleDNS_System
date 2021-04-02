@@ -33,19 +33,18 @@ def top_server():
     
         # recieve LS msg
         data_from_LS=csockid.recv(200)
-        hnsreq = "{}".format(data_from_LS.decode('UTF-8'))
-        if str.strip(hnsreq) == 'disconnect':
-            break
-        print("[TS1]: Processing request from LS-" + str.strip(hnsreq))
-    
-        # Check if in dns (caps insensitive search)
-        boolean = 0
-        for lineList in dnsts:
-            if lineList[0].lower() == str.strip(hnsreq.lower()):
-                csockid.send(convertList(lineList).encode('UTF-8'))
-                boolean = 1
-        #if boolean == 0:
-        #    csockid.send((str.strip(hnsreq) + " - ERROR: HOST NOT FOUND").encode('UTF-8'))
+        while data_from_LS:
+            hnsreq = "{}".format(data_from_LS.decode('UTF-8'))
+            if str.strip(hnsreq) == 'disconnect':
+                break
+            print("[TS1]: Processing request from LS-" + str.strip(hnsreq))
+            #print(dnsts)
+            # Check if in dns (caps insensitive search)
+
+            for lineList in dnsts:
+                if lineList[0].lower() == str.strip(hnsreq.lower()):
+                    csockid.send(convertList(lineList).encode('UTF-8'))
+            data_from_LS=csockid.recv(200)
         break
     # Close the server socket
     ss.close()

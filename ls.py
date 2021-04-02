@@ -64,10 +64,11 @@ def root_server():
         ls_ts1.setblocking(0)
         ls_ts2.setblocking(0)
         # Check if in dns (caps insensitive search)
+        data_from_ts = None
         ready1 = select.select([ls_ts1],[],[], 5.0)
         if ready1[0]:
             data_from_ts = ls_ts1.recv(200)
-        ready2 = select.select([ls_ts1],[],[], 5.0)
+        ready2 = select.select([ls_ts2],[],[], 5.0)
         if ready2[0]:
             data_from_ts = ls_ts2.recv(200)
 
